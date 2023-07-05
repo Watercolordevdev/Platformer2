@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://dtuavxh0fahsu"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_qf5pk"]
+[ext_resource type="Texture2D" uid="uid://bgei22mk0wo4d" path="res://Sunny-land-files/Sunny-land-assets-files/startbutton.png" id="2_2pf6x"]
+[ext_resource type="PackedScene" uid="uid://db6idqxvge3at" path="res://BG.tscn" id="2_yusf3"]
+[ext_resource type="Texture2D" uid="uid://51ghcgces0jq" path="res://Sunny-land-files/Sunny-land-assets-files/startbuttondown.png" id="3_ry7oc"]
+[ext_resource type="Texture2D" uid="uid://c34mk7qxd76e3" path="res://Sunny-land-files/Sunny-land-assets-files/startbuttonhover.png" id="4_gd076"]
+[ext_resource type="Texture2D" uid="uid://cac0ncg2wonsi" path="res://Sunny-land-files/Sunny-land-assets-files/quitbutton.png" id="5_byhjs"]
+[ext_resource type="Texture2D" uid="uid://de6cks6vrog4" path="res://Sunny-land-files/Sunny-land-assets-files/quitbuttondown.png" id="6_tjjrd"]
+[ext_resource type="Texture2D" uid="uid://dl2mjd58b4r6x" path="res://Sunny-land-files/Sunny-land-assets-files/quitbuttonhover.png" id="7_eum20"]
+
+[node name="Main" type="Node2D"]
+position = Vector2(470, 254)
+scale = Vector2(0.997344, 1.00765)
+script = ExtResource("1_qf5pk")
+
+[node name="startbutton" type="TextureButton" parent="."]
+offset_left = 53.1412
+offset_top = 55.5748
+offset_right = 117.141
+offset_bottom = 83.5748
+texture_normal = ExtResource("2_2pf6x")
+texture_pressed = ExtResource("3_ry7oc")
+texture_hover = ExtResource("4_gd076")
+stretch_mode = 0
+
+[node name="TextureButton" type="TextureButton" parent="."]
+offset_left = 52.1385
+offset_top = 87.3319
+offset_right = 117.138
+offset_bottom = 115.332
+texture_normal = ExtResource("5_byhjs")
+texture_pressed = ExtResource("6_tjjrd")
+texture_hover = ExtResource("7_eum20")
+
+[node name="BG" parent="." instance=ExtResource("2_yusf3")]
+
+[connection signal="pressed" from="startbutton" to="." method="_on_startbutton_pressed"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_quit_pressed"]

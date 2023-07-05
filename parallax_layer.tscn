@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5jmji1bhp0er"]
+
+[ext_resource type="Script" path="res://Parallax_Layer.gd" id="1_7cclw"]
+[ext_resource type="Texture2D" uid="uid://b1btyt0e8fohb" path="res://sunny-land-phaser-project/sunny-land/assets/environment/back.png" id="2_x4yny"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="."]
+script = ExtResource("1_7cclw")
+
+[node name="Back" type="Sprite2D" parent="ParallaxLayer"]
+position = Vector2(191, 119)
+texture = ExtResource("2_x4yny")

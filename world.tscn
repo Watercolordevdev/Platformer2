@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cp2tspfp0auxd"]
+
+[ext_resource type="PackedScene" uid="uid://cyljxi8pm25th" path="res://player.tscn" id="1_g4yp4"]
+
+[node name="World" type="Node2D"]
+position = Vector2(125, 103)
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = -106.0
+offset_top = 16.0
+offset_right = 126.0
+offset_bottom = 29.0
+
+[node name="Player" parent="." instance=ExtResource("1_g4yp4")]
+position = Vector2(1, -30)
+
+[node name="TileMap" type="TileMap" parent="."]
+format = 2
