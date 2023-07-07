@@ -417,7 +417,12 @@ layer_0/tile_data = PackedInt32Array(131069, 196608, 1, 131070, 196608, 1, 13107
 [node name="Player" parent="." instance=ExtResource("1_g4yp4")]
 position = Vector2(43, -9)
 
-[node name="Frog" parent="." instance=ExtResource("3_e482q")]
-position = Vector2(-14, 18)
+[node name="Mobs" type="Node2D" parent="."]
+position = Vector2(-125, -103)
 
-[node name="ParallaxBackground" parent="." instance=ExtResource("4_1rlgc")]
+[node name="Frog" parent="Mobs" instance=ExtResource("3_e482q")]
+position = Vector2(111, 121)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ParallaxBackground" parent="CanvasLayer" instance=ExtResource("4_1rlgc")]

@@ -21,6 +21,10 @@ func _ready():
 	pass
 
 func _physics_process(delta):
+	
+	if not is_on_floor():
+		State=PlayerState.STATE_FALL
+	
 	match(State):
 		PlayerState.STATE_IDLE:
 			velocity.x = 0
@@ -120,7 +124,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-func _on_animation_player_animation_finished(anim_name):
+func _on_animation_player_animation_finished(_anim_name):
 	match(State):
 		PlayerState.STATE_CROUCH:
 			keepplayanim=false;
