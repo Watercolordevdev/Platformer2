@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cp2tspfp0auxd"]
+[gd_scene load_steps=7 format=3 uid="uid://cp2tspfp0auxd"]
 
 [ext_resource type="PackedScene" uid="uid://cyljxi8pm25th" path="res://player.tscn" id="1_g4yp4"]
 [ext_resource type="Texture2D" uid="uid://dkdkhyp4cgjqx" path="res://sunny-land-phaser-project/sunny-land/assets/environment/tileset.png" id="1_txoir"]
 [ext_resource type="PackedScene" uid="uid://bfcrrv3otul1l" path="res://frog.tscn" id="3_e482q"]
+[ext_resource type="PackedScene" uid="uid://c5jmji1bhp0er" path="res://parallax_layer.tscn" id="4_1rlgc"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_660tq"]
 texture = ExtResource("1_txoir")
@@ -418,3 +419,5 @@ position = Vector2(43, -9)
 
 [node name="Frog" parent="." instance=ExtResource("3_e482q")]
 position = Vector2(-14, 18)
+
+[node name="ParallaxBackground" parent="." instance=ExtResource("4_1rlgc")]
