@@ -424,6 +424,15 @@ position = Vector2(-125, -103)
 [node name="Frog" parent="Mobs" instance=ExtResource("3_e482q")]
 position = Vector2(111, 126)
 
+[node name="Frog2" parent="Mobs" instance=ExtResource("3_e482q")]
+position = Vector2(25, 126)
+
+[node name="Frog3" parent="Mobs" instance=ExtResource("3_e482q")]
+position = Vector2(-26, 126)
+
+[node name="Frog4" parent="Mobs" instance=ExtResource("3_e482q")]
+position = Vector2(-81, 126)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ParallaxBackground" parent="CanvasLayer" instance=ExtResource("4_1rlgc")]

@@ -14,12 +14,10 @@ enum PlayerState {STATE_IDLE, STATE_WALK, STATE_FALL, STATE_CROUCH}
 var State: PlayerState= PlayerState.STATE_FALL;
 var keepplayanim:bool = true;
 
-func _process(delta):
-	
-	pass
-
-func _ready():
-	pass
+func ready():
+	if health <= 0:
+			queue_free()
+			get_tree().change_scene_to_file("res://main.tscn")
 
 func _physics_process(delta):
 	
@@ -136,4 +134,4 @@ func _on_animation_player_animation_finished(_anim_name):
 		PlayerState.STATE_FALL:
 			keepplayanim=false;
 		_:
-			pass # Replace with function body.
+			pass
