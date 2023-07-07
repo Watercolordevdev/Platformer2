@@ -1,6 +1,6 @@
 extends Node
 
-const SAVE_PATH = "users://savegame.bin"
+const SAVE_PATH = "user://savegame.bin"
 
 func saveGame():
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
