@@ -429,3 +429,5 @@ libraries = {
 }
 
 [node name="ParallaxBackground" parent="." instance=ExtResource("3_0tt4p")]
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
