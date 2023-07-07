@@ -15,6 +15,11 @@ run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Game="*res://Global/Game.gd"
+Utils="*res://Global/Utils.gd"
+
 [editor]
 
 run/main_run_args="--rendering-driver opengl3"
