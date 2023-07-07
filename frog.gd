@@ -12,12 +12,14 @@ func _physics_process(delta):
 		var direction = (player.global_position - self.global_position).normalized()
 		if direction.x > 0:		
 			get_node("AnimatedSprite2D").flip_h = true
-			print(player.global_position)
 			print("Right")
 		else:
 			get_node("AnimatedSprite2D").flip_h = false
-			print(player.global_position)
 			print("Left")
+		velocity.x = direction.x * SPEED
+	else:
+		velocity.x = 0
+	move_and_slide()
 
 
 func _on_player_detection_body_entered(body):
