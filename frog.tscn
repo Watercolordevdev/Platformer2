@@ -119,22 +119,22 @@ position = Vector2(2, -11)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
 shape = SubResource("CircleShape2D_y2lg1")
 
-[node name="PlayerDeath" type="Area2D" parent="."]
+[node name="FrogDeath" type="Area2D" parent="."]
 position = Vector2(2, -11)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDeath"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FrogDeath"]
 position = Vector2(-1, -2)
 shape = SubResource("RectangleShape2D_vl418")
 
-[node name="PlayerCollision" type="Area2D" parent="."]
+[node name="PlayerDeath2" type="Area2D" parent="."]
 position = Vector2(2, -11)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCollision"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDeath2"]
 position = Vector2(0.5, -1.5)
 shape = SubResource("RectangleShape2D_0yrkk")
 
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
-[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
-[connection signal="body_exited" from="PlayerDeath" to="." method="_on_player_death_body_exited"]
-[connection signal="body_entered" from="PlayerCollision" to="." method="_on_player_collision_body_entered"]
+[connection signal="body_entered" from="FrogDeath" to="." method="_on_player_death_body_entered"]
+[connection signal="body_exited" from="FrogDeath" to="." method="_on_player_death_body_exited"]
+[connection signal="body_entered" from="PlayerDeath2" to="." method="_on_player_collision_body_entered"]

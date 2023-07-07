@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 #Separate animation for Landing
 
 var health = 10
