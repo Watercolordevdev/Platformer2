@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bfcrrv3otul1l"]
+[gd_scene load_steps=17 format=3 uid="uid://bfcrrv3otul1l"]
 
 [ext_resource type="Texture2D" uid="uid://cef6eyvfruvul" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/idle/frog-idle-1.png" id="1_2m85a"]
 [ext_resource type="Script" path="res://frog.gd" id="1_xwof4"]
@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://ck7xe8occ6vhe" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/enemy-death/enemy-death-6.png" id="6_yfl3j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qiop8"]
-size = Vector2(21, 15)
+size = Vector2(21, 20)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vg578"]
 animations = [{
@@ -34,9 +34,9 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("6_yfl3j")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -50,6 +50,30 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("4_cggpt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_2m85a")
 }],
 "loop": true,
 "name": &"Idle",
@@ -70,22 +94,39 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_y2lg1"]
 radius = 66.0076
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vl418"]
+size = Vector2(16, 16)
+
 [node name="Frog" type="CharacterBody2D"]
+position = Vector2(0, 5)
 script = ExtResource("1_xwof4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1.5, -7.5)
+position = Vector2(1.5, -15)
 shape = SubResource("RectangleShape2D_qiop8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(2, -11)
+position = Vector2(3, -16)
 sprite_frames = SubResource("SpriteFrames_vg578")
-animation = &"Idle"
+animation = &"Death"
 
 [node name="PlayerDetection" type="Area2D" parent="."]
+visible = false
 position = Vector2(2, -11)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
 shape = SubResource("CircleShape2D_y2lg1")
 
+[node name="PlayerDeath" type="Area2D" parent="."]
+visible = false
+position = Vector2(2, -11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDeath"]
+visible = false
+position = Vector2(-1, -2)
+shape = SubResource("RectangleShape2D_vl418")
+
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
+[connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
+[connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_body_entered"]
+[connection signal="body_exited" from="PlayerDeath" to="." method="_on_player_death_body_exited"]

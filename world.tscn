@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://cp2tspfp0auxd"]
+[gd_scene load_steps=8 format=3 uid="uid://cp2tspfp0auxd"]
 
 [ext_resource type="PackedScene" uid="uid://cyljxi8pm25th" path="res://player.tscn" id="1_g4yp4"]
 [ext_resource type="Texture2D" uid="uid://dkdkhyp4cgjqx" path="res://sunny-land-phaser-project/sunny-land/assets/environment/tileset.png" id="1_txoir"]
 [ext_resource type="PackedScene" uid="uid://bfcrrv3otul1l" path="res://frog.tscn" id="3_e482q"]
 [ext_resource type="PackedScene" uid="uid://c5jmji1bhp0er" path="res://parallax_layer.tscn" id="4_1rlgc"]
+[ext_resource type="Script" path="res://HP.gd" id="5_61q74"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_660tq"]
 texture = ExtResource("1_txoir")
@@ -421,8 +422,19 @@ position = Vector2(43, -9)
 position = Vector2(-125, -103)
 
 [node name="Frog" parent="Mobs" instance=ExtResource("3_e482q")]
-position = Vector2(111, 121)
+position = Vector2(111, 126)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ParallaxBackground" parent="CanvasLayer" instance=ExtResource("4_1rlgc")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HP" type="Label" parent="UI"]
+offset_left = 14.0
+offset_top = 12.0
+offset_right = 54.0
+offset_bottom = 35.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+script = ExtResource("5_61q74")
