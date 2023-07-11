@@ -73,6 +73,7 @@ func _physics_process(delta):
 			else:
 				State=PlayerState.STATE_IDLE
 				keepplayanim=true;
+				
 		PlayerState.STATE_CROUCH:
 			if keepplayanim:
 				anim.play("Crouch")
