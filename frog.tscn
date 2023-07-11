@@ -9,9 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://bo6vw37egbgfn" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/enemy-death/enemy-death-4.png" id="4_c2ekt"]
 [ext_resource type="Texture2D" uid="uid://dcjuvtfa4nk05" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/idle/frog-idle-4.png" id="4_cggpt"]
 [ext_resource type="Texture2D" uid="uid://cflb5vcdgkllb" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/enemy-death/enemy-death-5.png" id="5_sy1ye"]
-[ext_resource type="Texture2D" uid="uid://cfq4scubbvsyb" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/jump/frog-jump-1.png" id="5_y4evj"]
-[ext_resource type="Texture2D" uid="uid://ye2gruxh5520" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/jump/frog-jump-2.png" id="6_sny6y"]
 [ext_resource type="Texture2D" uid="uid://ck7xe8occ6vhe" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/enemy-death/enemy-death-6.png" id="6_yfl3j"]
+[ext_resource type="Texture2D" uid="uid://c6pl1ekvdou74" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/jump/frog-jump--1.png" id="11_0auuw"]
+[ext_resource type="Texture2D" uid="uid://bso2w20ibohpb" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/jump/frog-jump--2.png" id="12_r43r5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qiop8"]
 size = Vector2(9, 9)
@@ -81,10 +81,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_y4evj")
+"texture": ExtResource("11_0auuw")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_sny6y")
+"texture": ExtResource("12_r43r5")
 }],
 "loop": true,
 "name": &"Jump",
@@ -98,30 +98,36 @@ radius = 66.0076
 size = Vector2(14, 8)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0yrkk"]
-size = Vector2(26, 11)
+size = Vector2(25, 11)
 
 [node name="Frog" type="CharacterBody2D"]
 position = Vector2(0, 5)
 script = ExtResource("1_xwof4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(1.5, -11.5)
 shape = SubResource("RectangleShape2D_qiop8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(3, -16)
+position = Vector2(3, -18)
 sprite_frames = SubResource("SpriteFrames_vg578")
 animation = &"Idle"
 
 [node name="PlayerDetection" type="Area2D" parent="."]
 visible = false
 position = Vector2(2, -11)
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
 shape = SubResource("CircleShape2D_y2lg1")
 
 [node name="FrogDeath" type="Area2D" parent="."]
+visible = false
 position = Vector2(2, -11)
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FrogDeath"]
 position = Vector2(0, -9)
@@ -129,14 +135,15 @@ shape = SubResource("RectangleShape2D_vl418")
 
 [node name="PlayerDeath" type="Area2D" parent="."]
 position = Vector2(2, -11)
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDeath"]
-position = Vector2(0, 0.5)
+position = Vector2(0.5, 0.5)
 shape = SubResource("RectangleShape2D_0yrkk")
 
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
 [connection signal="body_entered" from="FrogDeath" to="." method="_on_frog_death_body_entered"]
-[connection signal="body_exited" from="FrogDeath" to="." method="_on_frog_death_body_exited"]
 [connection signal="body_entered" from="PlayerDeath" to="." method="_on_player_death_2_body_entered"]
 [connection signal="body_exited" from="PlayerDeath" to="." method="_on_player_death_2_body_exited"]
