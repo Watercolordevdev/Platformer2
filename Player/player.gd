@@ -45,12 +45,8 @@ func _physics_process(delta):
 		PlayerState.STATE_WALK:
 			if keepplayanim:
 				anim.play("Walk")
+			_direction()
 			var direction = Input.get_axis("ui_left", "ui_right")
-			if direction == -1:
-				get_node("AnimatedSprite2D").flip_h = true
-			elif direction == 1:
-				get_node("AnimatedSprite2D").flip_h = false
-			velocity.x = direction * SPEED
 			if !direction:
 				State=PlayerState.STATE_IDLE
 				keepplayanim=true;
@@ -63,10 +59,12 @@ func _physics_process(delta):
 				keepplayanim=true;
 			
 		PlayerState.STATE_FALL:
+			_direction()
 			##If using springs, remember to check if player pressed jump
 			if velocity.y < 0:
 				if keepplayanim:
 					anim.play("Jump")
+					
 			else:
 				if keepplayanim:
 					anim.play("Fall")
@@ -84,6 +82,14 @@ func _physics_process(delta):
 				keepplayanim=true;
 		_:
 			pass
+	
+func _direction():
+	var direction = Input.get_axis("ui_left", "ui_right")
+	if direction == -1:
+		get_node("AnimatedSprite2D").flip_h = true
+	elif direction == 1:
+		get_node("AnimatedSprite2D").flip_h = false
+	velocity.x = direction * SPEED
 	
 	# Add the gravity.
 #	if not is_on_floor():

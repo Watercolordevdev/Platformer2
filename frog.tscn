@@ -95,16 +95,17 @@ animations = [{
 radius = 66.0076
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vl418"]
-size = Vector2(16, 16)
+size = Vector2(16, 19)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0yrkk"]
-size = Vector2(17, 11)
+size = Vector2(26, 13)
 
 [node name="Frog" type="CharacterBody2D"]
 position = Vector2(0, 5)
 script = ExtResource("1_xwof4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(1.5, -15)
 shape = SubResource("RectangleShape2D_qiop8")
 
@@ -114,6 +115,7 @@ sprite_frames = SubResource("SpriteFrames_vg578")
 animation = &"Idle"
 
 [node name="PlayerDetection" type="Area2D" parent="."]
+visible = false
 position = Vector2(2, -11)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetection"]
@@ -123,18 +125,19 @@ shape = SubResource("CircleShape2D_y2lg1")
 position = Vector2(2, -11)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FrogDeath"]
-position = Vector2(-1, -2)
+position = Vector2(-1, -3.5)
 shape = SubResource("RectangleShape2D_vl418")
 
 [node name="PlayerDeath2" type="Area2D" parent="."]
 position = Vector2(2, -11)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDeath2"]
-position = Vector2(0.5, -1.5)
+position = Vector2(0, -0.5)
 shape = SubResource("RectangleShape2D_0yrkk")
 
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_player_detection_body_entered"]
 [connection signal="body_exited" from="PlayerDetection" to="." method="_on_player_detection_body_exited"]
-[connection signal="body_entered" from="FrogDeath" to="." method="_on_player_death_body_entered"]
-[connection signal="body_exited" from="FrogDeath" to="." method="_on_player_death_body_exited"]
-[connection signal="body_entered" from="PlayerDeath2" to="." method="_on_player_collision_body_entered"]
+[connection signal="body_entered" from="FrogDeath" to="." method="_on_frog_death_body_entered"]
+[connection signal="body_exited" from="FrogDeath" to="." method="_on_frog_death_body_exited"]
+[connection signal="body_entered" from="PlayerDeath2" to="." method="_on_player_death_2_body_entered"]
+[connection signal="body_exited" from="PlayerDeath2" to="." method="_on_player_death_2_body_exited"]
