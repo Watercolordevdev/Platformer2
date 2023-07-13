@@ -16,12 +16,14 @@ enum PlayerState {STATE_IDLE, STATE_WALK, STATE_FALL, STATE_CROUCH}
 var State: PlayerState= PlayerState.STATE_FALL;
 var keepplayanim:bool = true;
 
+
 func ready():
 	if health <= 0:
 			queue_free()
 			get_tree().change_scene_to_file("res://main.tscn")
 
 func _physics_process(delta):
+	#velocity.y += delta * gravity
 	
 	if not is_on_floor():
 		State=PlayerState.STATE_FALL
@@ -42,10 +44,25 @@ func _physics_process(delta):
 				State=PlayerState.STATE_CROUCH
 				keepplayanim=true;
 				
+		#Do I need to normalize my move_direction?
 		PlayerState.STATE_WALK:
 			if keepplayanim:
 				anim.play("Walk")
 			_direction()
+			
+			if is_on_ceiling():
+				print(up_direction)
+				pass
+			if get_floor_angle()!=0:
+					print("slope!")
+					print(rad_to_deg(get_floor_angle()))
+					var floorangle = get_floor_angle()
+					#lerpf(rotation, floorangle, 0.5)
+					rotation=(lerpf(rotation, -floorangle, 0.45))
+					if $Middleraycast.is_colliding():
+						apply_floor_snap()					
+			if get_floor_angle()==0:
+				rotation=(0)
 			var direction = Input.get_axis("ui_left", "ui_right")
 			if !direction:
 				State=PlayerState.STATE_IDLE

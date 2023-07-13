@@ -3,9 +3,8 @@
 [ext_resource type="Script" path="res://Player/player.gd" id="1_fwtay"]
 [ext_resource type="Texture2D" uid="uid://drxed8yf6mttv" path="res://Sunny-land-files/Sunny-land-assets-files/jellycap.png" id="3_v403r"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_76di3"]
-radius = 19.5341
-height = 39.0683
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b7lg7"]
+size = Vector2(23.72, 33.0133)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yl5v2"]
 atlas = ExtResource("3_v403r")
@@ -405,17 +404,20 @@ _data = {
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
+floor_stop_on_slope = false
+floor_snap_length = 5.0
 script = ExtResource("1_fwtay")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3.437, 3.437)
+process_callback = 0
 limit_left = -1000000
 limit_top = -1000000
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, 7)
+position = Vector2(-1.5, 8)
 scale = Vector2(0.716694, 0.666399)
-shape = SubResource("CapsuleShape2D_76di3")
+shape = SubResource("RectangleShape2D_b7lg7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_0rl5i")
@@ -426,5 +428,17 @@ root_node = NodePath("../AnimatedSprite2D")
 libraries = {
 "": SubResource("AnimationLibrary_tjiy1")
 }
+
+[node name="Leftraycast" type="RayCast2D" parent="."]
+position = Vector2(-9, 20)
+target_position = Vector2(0, 11)
+
+[node name="Rightraycast" type="RayCast2D" parent="."]
+position = Vector2(6, 20)
+target_position = Vector2(0, 11)
+
+[node name="Middleraycast" type="RayCast2D" parent="."]
+position = Vector2(-1, 20)
+target_position = Vector2(0, 11)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
