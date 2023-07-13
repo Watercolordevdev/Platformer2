@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Frog
+
 var SPEED = 50
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var player
@@ -51,13 +53,13 @@ func _on_frog_death_body_entered(body):
 
 
 func _on_player_death_2_body_entered(body):
-	print("player ouch")
 	if body is Player:
-		print("playerdamage")
-		body.health -= 3
+		body.take_damage()
 		frogdeath(body)
 	pass # Replace with function body.
 
 
 func _on_player_death_2_body_exited(body):
 	pass # Replace with function body.
+	
+

@@ -4,9 +4,10 @@ class_name Player
 
 #Separate animation for Landing
 
+signal enemy_hit
 var health = 10
 const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+const JUMP_VELOCITY = -600.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 
@@ -23,7 +24,7 @@ func ready():
 			get_tree().change_scene_to_file("res://main.tscn")
 
 func _physics_process(delta):
-	#velocity.y += delta * gravity
+	velocity.y += delta * gravity
 	
 	if not is_on_floor():
 		State=PlayerState.STATE_FALL
@@ -60,7 +61,7 @@ func _physics_process(delta):
 					#lerpf(rotation, floorangle, 0.5)
 					rotation=(lerpf(rotation, -floorangle, 0.45))
 					if $Middleraycast.is_colliding():
-						apply_floor_snap()					
+						apply_floor_snap()
 			if get_floor_angle()==0:
 				rotation=(0)
 			var direction = Input.get_axis("ui_left", "ui_right")
@@ -81,7 +82,6 @@ func _physics_process(delta):
 			if velocity.y < 0:
 				if keepplayanim:
 					anim.play("Jump")
-					
 			else:
 				if keepplayanim:
 					anim.play("Fall")
@@ -161,3 +161,15 @@ func _on_animation_player_animation_finished(_anim_name):
 			keepplayanim=false;
 		_:
 			pass
+
+
+func _on_hitbox_body_entered(body):
+	if body is Frog:
+		take_damage()
+
+func take_damage():
+	health -= 3
+	print (health)
+
+
+

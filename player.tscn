@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cyljxi8pm25th"]
+[gd_scene load_steps=37 format=3 uid="uid://cyljxi8pm25th"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_fwtay"]
 [ext_resource type="Texture2D" uid="uid://drxed8yf6mttv" path="res://Sunny-land-files/Sunny-land-assets-files/jellycap.png" id="3_v403r"]
@@ -402,6 +402,8 @@ _data = {
 "Walk": SubResource("Animation_jwx07")
 }
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uwbem"]
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 floor_stop_on_slope = false
@@ -441,4 +443,11 @@ target_position = Vector2(0, 11)
 position = Vector2(-1, 20)
 target_position = Vector2(0, 11)
 
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CapsuleShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(-1, 5)
+shape = SubResource("CapsuleShape2D_uwbem")
+
+[connection signal="enemy_hit" from="." to="." method="_on_enemy_hit"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
