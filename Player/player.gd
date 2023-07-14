@@ -7,7 +7,7 @@ class_name Player
 signal enemy_hit
 var health = 10
 const SPEED = 300.0
-const JUMP_VELOCITY = -600.0
+const JUMP_VELOCITY = -450.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 
@@ -23,6 +23,18 @@ func ready():
 			queue_free()
 			get_tree().change_scene_to_file("res://main.tscn")
 
+func transition_to_state(newState: PlayerState):
+# This is the list of things that need to happen only once for a state, when transitioning to that state
+	match(newState):
+		PlayerState.STATE_IDLE:
+			anim.play("Idle")
+		PlayerState.STATE_CROUCH:
+			anim.play("Crouch")
+		_:
+			pass
+	State = newState
+
+
 func _physics_process(delta):
 	velocity.y += delta * gravity
 	
@@ -32,23 +44,24 @@ func _physics_process(delta):
 	match(State):
 		PlayerState.STATE_IDLE:
 			velocity.x = 0
-			if keepplayanim:
-				anim.play("Idle")
+			var normal = $Middleraycast.get_collision_normal()
+			rotation = normal.angle() + deg_to_rad(90)
+			anim.play("Idle")
 			if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 				velocity.y = JUMP_VELOCITY
 				State=PlayerState.STATE_FALL
-				keepplayanim=true;
+
 			elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_right"):
 				State=PlayerState.STATE_WALK
-				keepplayanim=true;
+
 			if Input.is_action_just_pressed("ui_down"):
 				State=PlayerState.STATE_CROUCH
-				keepplayanim=true;
+
 				
 		#Do I need to normalize my move_direction?
 		PlayerState.STATE_WALK:
-			if keepplayanim:
-				anim.play("Walk")
+
+			anim.play("Walk")
 			_direction()
 			
 			if is_on_ceiling():
@@ -58,46 +71,44 @@ func _physics_process(delta):
 					print("slope!")
 					print(rad_to_deg(get_floor_angle()))
 					var floorangle = get_floor_angle()
-					#lerpf(rotation, floorangle, 0.5)
 					rotation=(lerpf(rotation, -floorangle, 0.45))
 					if $Middleraycast.is_colliding():
 						apply_floor_snap()
 			if get_floor_angle()==0:
 				rotation=(0)
+#			if get_floor_angle()>=75:
+#				State=PlayerState.STATE_IDLE
 			var direction = Input.get_axis("ui_left", "ui_right")
 			if !direction:
 				State=PlayerState.STATE_IDLE
-				keepplayanim=true;
+
 			if Input.is_action_just_pressed("ui_accept"):
 				velocity.y = JUMP_VELOCITY
 				State=PlayerState.STATE_FALL
-				keepplayanim=true;
+
 			if Input.is_action_just_pressed("ui_down"):
 				State=PlayerState.STATE_CROUCH
-				keepplayanim=true;
+	
 			
 		PlayerState.STATE_FALL:
 			_direction()
 			##If using springs, remember to check if player pressed jump
 			if velocity.y < 0:
-				if keepplayanim:
-					anim.play("Jump")
+	
+				anim.play("Jump")
 			else:
-				if keepplayanim:
-					anim.play("Fall")
-			if not is_on_floor():
-				velocity.y += gravity * delta
-			else:
+
+				anim.play("Fall")
+			if is_on_floor():
 				State=PlayerState.STATE_IDLE
-				keepplayanim=true;
+
 				
 		PlayerState.STATE_CROUCH:
-			if keepplayanim:
+	
 				anim.play("Crouch")
-			
-			if !Input.is_action_pressed("ui_down"):
-				State=PlayerState.STATE_IDLE
-				keepplayanim=true;
+				if !Input.is_action_pressed("ui_down"):
+					State=PlayerState.STATE_IDLE
+	
 		_:
 			pass
 	
@@ -149,18 +160,18 @@ func _direction():
 	move_and_slide()
 
 
-func _on_animation_player_animation_finished(_anim_name):
-	match(State):
-		PlayerState.STATE_CROUCH:
-			keepplayanim=false;
-		PlayerState.STATE_IDLE:
-			keepplayanim=false;
-		PlayerState.STATE_WALK:
-			keepplayanim=true;
-		PlayerState.STATE_FALL:
-			keepplayanim=false;
-		_:
-			pass
+#func _on_animation_player_animation_finished(_anim_name):
+#	match(State):
+#		PlayerState.STATE_CROUCH:
+#			keepplayanim=false;
+#		PlayerState.STATE_IDLE:
+#			keepplayanim=false;
+#		PlayerState.STATE_WALK:
+#			keepplayanim=true;
+#		PlayerState.STATE_FALL:
+#			keepplayanim=false;
+#		_:
+#			pass
 
 
 func _on_hitbox_body_entered(body):
