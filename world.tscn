@@ -801,7 +801,7 @@ sources/3 = SubResource("TileSetAtlasSource_d2wpk")
 position = Vector2(125, 103)
 
 [node name="TileMap" type="TileMap" parent="."]
-position = Vector2(223, -24)
+position = Vector2(817, 366)
 tile_set = SubResource("TileSet_n7q28")
 format = 2
 layer_0/name = "Base"
@@ -815,14 +815,14 @@ layer_1/z_index = 0
 layer_1/tile_data = PackedInt32Array()
 
 [node name="Player" parent="." instance=ExtResource("1_g4yp4")]
-position = Vector2(41, -60)
+position = Vector2(816, 322)
 floor_snap_length = 50.0
 
 [node name="Mobs" type="Node2D" parent="."]
 position = Vector2(-125, -103)
 
 [node name="Frog" parent="Mobs" instance=ExtResource("3_e482q")]
-position = Vector2(-450, 107)
+position = Vector2(670, 455)
 
 [node name="BG" parent="." instance=ExtResource("5_weo1f")]
 

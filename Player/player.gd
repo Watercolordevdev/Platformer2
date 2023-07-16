@@ -3,16 +3,19 @@ extends CharacterBody2D
 class_name Player
 
 #Separate animation for Landing
+#Change hitbox when crouching
+
 
 signal enemy_hit
 var health = 10
 const SPEED = 300.0
-const JUMP_VELOCITY = -450.0
+const JUMP_VELOCITY = -350.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var anim = get_node("AnimationPlayer")
+@export var Doublejump : PackedScene
 enum PlayerState {STATE_IDLE, STATE_WALK, STATE_FALL, STATE_CROUCH}
 var State: PlayerState= PlayerState.STATE_FALL;
 var keepplayanim:bool = true;
@@ -47,7 +50,16 @@ func _rotateground(delta):
 			$AnimatedSprite2D.rotation = lerp(rotation, averagenormal.angle() + PI/2, align_speed * delta)
 		pass
 
-
+func jumpeffect():
+	var je = Doublejump.instantiate()
+	je.position = self.position
+	#je.get_node("Sprite2D").flip_h=$AnimatedSprite2D.flip_h
+	var flip = $AnimatedSprite2D.flip_h
+	if flip == true:
+		je.scale.x = -.5
+	get_parent().add_child(je)
+	print("puff")
+	return
 
 func _physics_process(delta):
 	velocity.y += delta * gravity
@@ -114,7 +126,12 @@ func _physics_process(delta):
 			
 			if Input.is_action_just_pressed("ui_accept") && jumps < 1:
 				jumps +=1
-				velocity.y = JUMP_VELOCITY
+				if jumps == 0:
+					velocity.y = JUMP_VELOCITY
+					jumpeffect()
+				else:
+					velocity.y = JUMP_VELOCITY*0.5
+					jumpeffect()
 			if velocity.y < 0:	
 				anim.play("Jump")
 			else:
