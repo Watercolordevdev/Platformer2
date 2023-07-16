@@ -37,11 +37,14 @@ func transition_to_state(newState: PlayerState):
 	State = newState
 
 func _rotateground(delta):
-		var normal = $Middleraycast.get_collision_normal()
+		var normal2 = $Rightraycast.get_collision_normal()
+		var normal1 = $Middleraycast.get_collision_normal()
+		var normal3 = $Leftraycast.get_collision_normal()
+		var averagenormal = (normal1 + normal2 + normal3)/3
 		#rotation = normal.angle() + deg_to_rad(90)
+		
 		if is_on_floor():
-			$Hitbox.rotation = lerp(rotation, get_floor_normal().angle() + PI/2, align_speed * delta)
-			$AnimatedSprite2D.rotation = lerp(rotation, get_floor_normal().angle() + PI/2, align_speed * delta)
+			$AnimatedSprite2D.rotation = lerp(rotation, averagenormal.angle() + PI/2, align_speed * delta)
 		pass
 
 
