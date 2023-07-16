@@ -38,7 +38,7 @@ func _on_player_detection_body_exited(body):
 		chase = false
 #
 #
-func frogdeath(body):
+func frogdeath(_body):
 	chase = false
 	#if body is Player:
 	$AnimatedSprite2D.play("Death")
@@ -59,7 +59,7 @@ func _on_player_death_2_body_entered(body):
 	pass # Replace with function body.
 
 
-func _on_player_death_2_body_exited(body):
+func _on_player_death_2_body_exited(_body):
 	pass # Replace with function body.
 	
 

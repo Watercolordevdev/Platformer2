@@ -16,6 +16,8 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 enum PlayerState {STATE_IDLE, STATE_WALK, STATE_FALL, STATE_CROUCH}
 var State: PlayerState= PlayerState.STATE_FALL;
 var keepplayanim:bool = true;
+var jumps: int = 0;
+var align_speed = 57;
 
 
 func ready():
@@ -34,9 +36,27 @@ func transition_to_state(newState: PlayerState):
 			pass
 	State = newState
 
+func _rotateground(delta):
+		var normal = $Middleraycast.get_collision_normal()
+		#rotation = normal.angle() + deg_to_rad(90)
+		if is_on_floor():
+			$Hitbox.rotation = lerp(rotation, get_floor_normal().angle() + PI/2, align_speed * delta)
+			$AnimatedSprite2D.rotation = lerp(rotation, get_floor_normal().angle() + PI/2, align_speed * delta)
+		pass
+
+
 
 func _physics_process(delta):
 	velocity.y += delta * gravity
+	_rotateground(delta)
+	
+	if is_on_wall():
+		print("Wall!")
+		print(get_wall_normal())
+		
+	
+	if is_on_floor():
+		jumps =0
 	
 	if not is_on_floor():
 		State=PlayerState.STATE_FALL
@@ -44,48 +64,43 @@ func _physics_process(delta):
 	match(State):
 		PlayerState.STATE_IDLE:
 			velocity.x = 0
-			var normal = $Middleraycast.get_collision_normal()
-			rotation = normal.angle() + deg_to_rad(90)
 			anim.play("Idle")
 			if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 				velocity.y = JUMP_VELOCITY
 				State=PlayerState.STATE_FALL
-
 			elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_right"):
 				State=PlayerState.STATE_WALK
-
 			if Input.is_action_just_pressed("ui_down"):
 				State=PlayerState.STATE_CROUCH
+#			if abs(get_floor_angle())<deg_to_rad(50):
+#				var normal = $Middleraycast.get_collision_normal()
+#				rotation = normal.angle() + deg_to_rad(90)
+		
 
 				
-		#Do I need to normalize my move_direction?
 		PlayerState.STATE_WALK:
-
 			anim.play("Walk")
-			_direction()
-			
+			_direction()			
 			if is_on_ceiling():
 				print(up_direction)
 				pass
-			if get_floor_angle()!=0:
-					print("slope!")
-					print(rad_to_deg(get_floor_angle()))
-					var floorangle = get_floor_angle()
-					rotation=(lerpf(rotation, -floorangle, 0.45))
-					if $Middleraycast.is_colliding():
-						apply_floor_snap()
-			if get_floor_angle()==0:
-				rotation=(0)
-#			if get_floor_angle()>=75:
-#				State=PlayerState.STATE_IDLE
+			
+#			if get_floor_angle()!=0:
+#					var floorangle = get_floor_angle()
+#					rotation=(lerpf(rotation, -floorangle, 0.45))
+#					if $Middleraycast.is_colliding():
+#						apply_floor_snap()
+#			if get_floor_angle()==0:
+#				rotation=(0)
+#			if abs(get_floor_angle())<50:
+#				var normal = $Middleraycast.get_collision_normal()
+#				rotation = normal.angle() + deg_to_rad(90)
 			var direction = Input.get_axis("ui_left", "ui_right")
 			if !direction:
 				State=PlayerState.STATE_IDLE
-
 			if Input.is_action_just_pressed("ui_accept"):
 				velocity.y = JUMP_VELOCITY
 				State=PlayerState.STATE_FALL
-
 			if Input.is_action_just_pressed("ui_down"):
 				State=PlayerState.STATE_CROUCH
 	
@@ -93,11 +108,13 @@ func _physics_process(delta):
 		PlayerState.STATE_FALL:
 			_direction()
 			##If using springs, remember to check if player pressed jump
-			if velocity.y < 0:
-	
+			
+			if Input.is_action_just_pressed("ui_accept") && jumps < 1:
+				jumps +=1
+				velocity.y = JUMP_VELOCITY
+			if velocity.y < 0:	
 				anim.play("Jump")
 			else:
-
 				anim.play("Fall")
 			if is_on_floor():
 				State=PlayerState.STATE_IDLE
@@ -108,7 +125,6 @@ func _physics_process(delta):
 				anim.play("Crouch")
 				if !Input.is_action_pressed("ui_down"):
 					State=PlayerState.STATE_IDLE
-	
 		_:
 			pass
 	
@@ -120,58 +136,8 @@ func _direction():
 		get_node("AnimatedSprite2D").flip_h = false
 	velocity.x = direction * SPEED
 	
-	# Add the gravity.
-#	if not is_on_floor():
-#		velocity.y += gravity * delta
-#
-#	# Handle Jump.
-#	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-#		velocity.y = JUMP_VELOCITY
-#		anim.play("Jump")
-#		print("jump")
-#	#Do Crouch
-#	if Input.is_action_just_pressed("ui_down") and is_on_floor():
-#		print("crouch")
-#		anim.play("Crouch")
-#
-#	# Get the input direction and handle the movement/deceleration.
-#	# As good practice, you should replace UI actions with custom gameplay actions.
-#	#var direction2 = Input.get_axis("ui_up", "ui_down")
-#	var direction = Input.get_axis("ui_left", "ui_right")
-#	if direction == -1:
-#		get_node("AnimatedSprite2D").flip_h = true
-#	elif direction == 1:
-#		get_node("AnimatedSprite2D").flip_h = false
-#	if direction:
-#		velocity.x = direction * SPEED
-#		if velocity.y == 0:
-#			anim.play("Walk")
-#
-#	else:
-#		velocity.x = move_toward(velocity.x, 0, SPEED)
-#		if velocity.y == 0 and velocity.x == 0 and not Input.is_action_pressed("ui_down"):
-#			anim.play("Idle")
-#
-#	if velocity.y > 0:
-#		anim.play("Fall")
-#		print("fall")
-#
 
 	move_and_slide()
-
-
-#func _on_animation_player_animation_finished(_anim_name):
-#	match(State):
-#		PlayerState.STATE_CROUCH:
-#			keepplayanim=false;
-#		PlayerState.STATE_IDLE:
-#			keepplayanim=false;
-#		PlayerState.STATE_WALK:
-#			keepplayanim=true;
-#		PlayerState.STATE_FALL:
-#			keepplayanim=false;
-#		_:
-#			pass
 
 
 func _on_hitbox_body_entered(body):
