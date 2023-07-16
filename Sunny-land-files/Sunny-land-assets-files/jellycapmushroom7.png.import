@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cn0g4m10p5ygb"
-path="res://.godot/imported/credits-text.png-9a98a1ad64f77d54ba75541255d31d3b.ctex"
+uid="uid://sj132xfayfyj"
+path="res://.godot/imported/jellycapmushroom7.png-3b5b28e063c69e52e405323e9f2b1467.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sunny-land-phaser-project/sunny-land/assets/sprites/credits-text.png"
-dest_files=["res://.godot/imported/credits-text.png-9a98a1ad64f77d54ba75541255d31d3b.ctex"]
+source_file="res://Sunny-land-files/Sunny-land-assets-files/jellycapmushroom7.png"
+dest_files=["res://.godot/imported/jellycapmushroom7.png-3b5b28e063c69e52e405323e9f2b1467.ctex"]
 
 [params]
 

@@ -8,20 +8,19 @@ class_name Player
 
 signal enemy_hit
 var health = 10
-const SPEED = 300.0
+const SPEED = 200.0
 const JUMP_VELOCITY = -350.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-@onready var anim = get_node("AnimationPlayer")
+@onready var anim = $"AnimationPlayer"
 @export var Doublejump : PackedScene
-enum PlayerState {STATE_IDLE, STATE_WALK, STATE_FALL, STATE_CROUCH}
+enum PlayerState {STATE_IDLE, STATE_WALK, STATE_FALL, STATE_CROUCH, STATE_THROW, STATE_RUN}
 var State: PlayerState= PlayerState.STATE_FALL;
 var keepplayanim:bool = true;
 var jumps: int = 0;
 var align_speed = 57;
-
 
 func ready():
 	if health <= 0:
@@ -32,9 +31,12 @@ func transition_to_state(newState: PlayerState):
 # This is the list of things that need to happen only once for a state, when transitioning to that state
 	match(newState):
 		PlayerState.STATE_IDLE:
+			print("Idle")
 			anim.play("Idle")
 		PlayerState.STATE_CROUCH:
 			anim.play("Crouch")
+		PlayerState.STATE_THROW:
+			anim.play("Mushroom Throw")
 		_:
 			pass
 	State = newState
@@ -44,7 +46,6 @@ func _rotateground(delta):
 		var normal1 = $Middleraycast.get_collision_normal()
 		var normal3 = $Leftraycast.get_collision_normal()
 		var averagenormal = (normal1 + normal2 + normal3)/3
-		#rotation = normal.angle() + deg_to_rad(90)
 		
 		if is_on_floor():
 			$AnimatedSprite2D.rotation = lerp(rotation, averagenormal.angle() + PI/2, align_speed * delta)
@@ -53,7 +54,6 @@ func _rotateground(delta):
 func jumpeffect():
 	var je = Doublejump.instantiate()
 	je.position = self.position
-	#je.get_node("Sprite2D").flip_h=$AnimatedSprite2D.flip_h
 	var flip = $AnimatedSprite2D.flip_h
 	if flip == true:
 		je.scale.x = -.5
@@ -68,63 +68,48 @@ func _physics_process(delta):
 	if is_on_wall():
 		print("Wall!")
 		print(get_wall_normal())
-		
 	
 	if is_on_floor():
 		jumps =0
 	
 	if not is_on_floor():
-		State=PlayerState.STATE_FALL
+		transition_to_state(PlayerState.STATE_FALL)
 	
 	match(State):
 		PlayerState.STATE_IDLE:
 			velocity.x = 0
-			anim.play("Idle")
-			if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+			if Input.is_action_just_pressed("jump") and is_on_floor():
 				velocity.y = JUMP_VELOCITY
-				State=PlayerState.STATE_FALL
-			elif Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_right"):
-				State=PlayerState.STATE_WALK
-			if Input.is_action_just_pressed("ui_down"):
-				State=PlayerState.STATE_CROUCH
-#			if abs(get_floor_angle())<deg_to_rad(50):
-#				var normal = $Middleraycast.get_collision_normal()
-#				rotation = normal.angle() + deg_to_rad(90)
-		
+				transition_to_state(PlayerState.STATE_FALL)
+			elif Input.is_action_pressed("throw"):
+					transition_to_state(PlayerState.STATE_THROW)
+			elif Input.is_action_just_pressed("left") or Input.is_action_just_pressed("right"):
+				transition_to_state(PlayerState.STATE_WALK)
+			elif Input.is_action_just_pressed("crouch"):
+				transition_to_state(PlayerState.STATE_CROUCH)
 
-				
 		PlayerState.STATE_WALK:
 			anim.play("Walk")
 			_direction()			
 			if is_on_ceiling():
 				print(up_direction)
 				pass
-			
-#			if get_floor_angle()!=0:
-#					var floorangle = get_floor_angle()
-#					rotation=(lerpf(rotation, -floorangle, 0.45))
-#					if $Middleraycast.is_colliding():
-#						apply_floor_snap()
-#			if get_floor_angle()==0:
-#				rotation=(0)
-#			if abs(get_floor_angle())<50:
-#				var normal = $Middleraycast.get_collision_normal()
-#				rotation = normal.angle() + deg_to_rad(90)
-			var direction = Input.get_axis("ui_left", "ui_right")
+			var direction = Input.get_axis("left", "right")
 			if !direction:
-				State=PlayerState.STATE_IDLE
-			if Input.is_action_just_pressed("ui_accept"):
+				transition_to_state(PlayerState.STATE_IDLE)
+			if Input.is_action_just_pressed("jump"):
 				velocity.y = JUMP_VELOCITY
-				State=PlayerState.STATE_FALL
-			if Input.is_action_just_pressed("ui_down"):
-				State=PlayerState.STATE_CROUCH
+				transition_to_state(PlayerState.STATE_FALL)
+			if Input.is_action_just_pressed("crouch"):
+				transition_to_state(PlayerState.STATE_CROUCH)
+			if Input.is_action_just_pressed("throw"):
+					transition_to_state(PlayerState.STATE_THROW)
 	
 			
 		PlayerState.STATE_FALL:
 			_direction()
 			##If using springs, remember to check if player pressed jump
-			
-			if Input.is_action_just_pressed("ui_accept") && jumps < 1:
+			if Input.is_action_just_pressed("jump") && jumps < 1:
 				jumps +=1
 				if jumps == 0:
 					velocity.y = JUMP_VELOCITY
@@ -137,19 +122,23 @@ func _physics_process(delta):
 			else:
 				anim.play("Fall")
 			if is_on_floor():
-				State=PlayerState.STATE_IDLE
+				transition_to_state(PlayerState.STATE_IDLE)
 
-				
 		PlayerState.STATE_CROUCH:
-	
-				anim.play("Crouch")
-				if !Input.is_action_pressed("ui_down"):
-					State=PlayerState.STATE_IDLE
+			if !Input.is_action_pressed("crouch"):
+					transition_to_state(PlayerState.STATE_IDLE)
+		_:
+			pass
+		
+		PlayerState.STATE_THROW:
+			pass
+#			if !Input.is_action_pressed("throw"):
+#				transition_to_state(PlayerState.STATE_IDLE)
 		_:
 			pass
 	
 func _direction():
-	var direction = Input.get_axis("ui_left", "ui_right")
+	var direction = Input.get_axis("left", "right")
 	if direction == -1:
 		get_node("AnimatedSprite2D").flip_h = true
 	elif direction == 1:
@@ -168,5 +157,10 @@ func take_damage():
 	health -= 3
 	print (health)
 
-
-
+func _on_animation_player_animation_finished(anim_name):
+	print(anim_name)
+	match(anim_name):
+		"Mushroom Throw":
+			print("it works")
+			transition_to_state(PlayerState.STATE_IDLE)
+	pass # Replace with function body.

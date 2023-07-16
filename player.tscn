@@ -1,8 +1,14 @@
-[gd_scene load_steps=38 format=3 uid="uid://cyljxi8pm25th"]
+[gd_scene load_steps=55 format=3 uid="uid://cyljxi8pm25th"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_fwtay"]
 [ext_resource type="PackedScene" uid="uid://dbgwh47mobmeu" path="res://Effects/jump_effect.tscn" id="2_pqftd"]
 [ext_resource type="Texture2D" uid="uid://drxed8yf6mttv" path="res://Sunny-land-files/Sunny-land-assets-files/jellycap.png" id="3_v403r"]
+[ext_resource type="Texture2D" uid="uid://c6qr1ndaxwtew" path="res://Sunny-land-files/Sunny-land-assets-files/jellycapmushroom2.png" id="4_skbx5"]
+[ext_resource type="Texture2D" uid="uid://v1ocq3onp1fk" path="res://Sunny-land-files/Sunny-land-assets-files/jellycapmushroom3.png" id="5_878t5"]
+[ext_resource type="Texture2D" uid="uid://b5k2aams6v7vo" path="res://Sunny-land-files/Sunny-land-assets-files/jellycapmushroom4.png" id="6_vucbw"]
+[ext_resource type="Texture2D" uid="uid://pgq7fiq86awn" path="res://Sunny-land-files/Sunny-land-assets-files/jellycapmushroom5.png" id="7_0nksv"]
+[ext_resource type="Texture2D" uid="uid://d2mn3pn0r1qxb" path="res://Sunny-land-files/Sunny-land-assets-files/jellycapmushroom6.png" id="8_n4scy"]
+[ext_resource type="Texture2D" uid="uid://sj132xfayfyj" path="res://Sunny-land-files/Sunny-land-assets-files/jellycapmushroom7.png" id="9_x82o4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1fis6"]
 
@@ -65,6 +71,42 @@ region = Rect2(0, 240, 40, 40)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ui1oj"]
 atlas = ExtResource("3_v403r")
 region = Rect2(40, 240, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_da2as"]
+atlas = ExtResource("3_v403r")
+region = Rect2(0, 0, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ffsuq"]
+atlas = ExtResource("3_v403r")
+region = Rect2(0, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycsfc"]
+atlas = ExtResource("3_v403r")
+region = Rect2(40, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8gutl"]
+atlas = ExtResource("3_v403r")
+region = Rect2(80, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0yjin"]
+atlas = ExtResource("3_v403r")
+region = Rect2(120, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3kk88"]
+atlas = ExtResource("3_v403r")
+region = Rect2(160, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5yqse"]
+atlas = ExtResource("3_v403r")
+region = Rect2(200, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p57ml"]
+atlas = ExtResource("3_v403r")
+region = Rect2(240, 120, 40, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1w436"]
+atlas = ExtResource("3_v403r")
+region = Rect2(280, 120, 40, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pj6w4"]
 atlas = ExtResource("3_v403r")
@@ -164,6 +206,64 @@ animations = [{
 "loop": true,
 "name": &"Jump",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_da2as")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_skbx5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_878t5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_vucbw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_0nksv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_n4scy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_x82o4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_da2as")
+}],
+"loop": true,
+"name": &"Mushroom",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ffsuq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ycsfc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8gutl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0yjin")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3kk88")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5yqse")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p57ml")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1w436")
+}],
+"loop": true,
+"name": &"Run",
+"speed": 12.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -281,7 +381,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_vc8av"]
 resource_name = "Idle"
-loop_mode = 2
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -301,7 +401,7 @@ tracks/1/path = NodePath(".:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.907459, 0.963882),
+"times": PackedFloat32Array(0, 1.6, 1.8),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [0, 1, 2]
@@ -391,6 +491,62 @@ tracks/1/keys = {
 "values": [0, 1, 2, 3, 4, 5, 6, 7]
 }
 
+[sub_resource type="Animation" id="Animation_xqu8c"]
+resource_name = "Mushroom Throw"
+length = 1.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Mushroom"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.8, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 0]
+}
+
+[sub_resource type="Animation" id="Animation_bmjqv"]
+resource_name = "Run"
+length = 0.6995
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Run"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 3, 4, 5, 6, 7]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tjiy1"]
 _data = {
 "Crouch": SubResource("Animation_f71k2"),
@@ -398,7 +554,9 @@ _data = {
 "Fall": SubResource("Animation_11hke"),
 "Idle": SubResource("Animation_vc8av"),
 "Jump": SubResource("Animation_oaywh"),
+"Mushroom Throw": SubResource("Animation_xqu8c"),
 "RESET": SubResource("Animation_1w4vg"),
+"Run": SubResource("Animation_bmjqv"),
 "Walk": SubResource("Animation_jwx07")
 }
 
@@ -418,6 +576,7 @@ limit_left = -1000000
 limit_top = -1000000
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -10)
 shape = SubResource("CircleShape2D_1fis6")
 
@@ -447,7 +606,9 @@ target_position = Vector2(0, 20)
 [node name="Hitbox" type="Area2D" parent="."]
 
 [node name="CapsuleShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
 position = Vector2(0, -14.81)
 shape = SubResource("CapsuleShape2D_uwbem")
 
 [connection signal="enemy_hit" from="." to="." method="_on_enemy_hit"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
