@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://boyibrd30jnxu"]
+
+[ext_resource type="Script" path="res://Mushroom.gd" id="1_65ye0"]
+[ext_resource type="Texture2D" uid="uid://bx84grxsp3lh6" path="res://Sunny-land-files/Sunny-land-assets-files/tinymushroom5.png" id="2_yvm8m"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8wt7f"]
+radius = 2.94648
+
+[node name="Mushroom" type="Area2D"]
+script = ExtResource("1_65ye0")
+
+[node name="Tinymushroom" type="Sprite2D" parent="."]
+position = Vector2(3.58817, 0.159728)
+texture = ExtResource("2_yvm8m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2.88607, 0.370129)
+shape = SubResource("CircleShape2D_8wt7f")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.344
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

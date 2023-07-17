@@ -13,9 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://c6pl1ekvdou74" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/jump/frog-jump--1.png" id="11_0auuw"]
 [ext_resource type="Texture2D" uid="uid://bso2w20ibohpb" path="res://Sunny-land-files/Sunny-land-assets-files/PNG/sprites/frog/jump/frog-jump--2.png" id="12_r43r5"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qiop8"]
-size = Vector2(9, 9)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_vg578"]
 animations = [{
 "frames": [{
@@ -91,6 +88,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qiop8"]
+size = Vector2(9, 9)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_y2lg1"]
 radius = 66.0076
 
@@ -100,19 +100,18 @@ size = Vector2(14, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0yrkk"]
 size = Vector2(25, 11)
 
-[node name="Frog" type="CharacterBody2D"]
+[node name="Frog" type="CharacterBody2D" groups=["mobs"]]
 position = Vector2(0, 5)
 script = ExtResource("1_xwof4")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(1.5, -11.5)
-shape = SubResource("RectangleShape2D_qiop8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(3, -18)
 sprite_frames = SubResource("SpriteFrames_vg578")
 animation = &"Idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.5, -11.5)
+shape = SubResource("RectangleShape2D_qiop8")
 
 [node name="PlayerDetection" type="Area2D" parent="."]
 visible = false
@@ -124,6 +123,7 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_y2lg1")
 
 [node name="FrogDeath" type="Area2D" parent="."]
+visible = false
 position = Vector2(2, -11)
 collision_layer = 0
 collision_mask = 2
@@ -133,6 +133,7 @@ position = Vector2(0, -9)
 shape = SubResource("RectangleShape2D_vl418")
 
 [node name="PlayerDeath" type="Area2D" parent="."]
+visible = false
 position = Vector2(2, -11)
 collision_layer = 0
 collision_mask = 2

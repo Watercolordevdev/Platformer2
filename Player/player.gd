@@ -5,10 +5,12 @@ class_name Player
 #Separate animation for Landing
 #Change hitbox when crouching
 
+@export var Mushroom : PackedScene
 
 signal enemy_hit
 var health = 10
-const SPEED = 200.0
+const WALKSPEED = 100.0
+const RUNSPEED = 200.0
 const JUMP_VELOCITY = -350.0
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -21,11 +23,24 @@ var State: PlayerState= PlayerState.STATE_FALL;
 var keepplayanim:bool = true;
 var jumps: int = 0;
 var align_speed = 57;
+var facingright = true;
+var cansprint = false;
 
 func ready():
 	if health <= 0:
 			queue_free()
 			get_tree().change_scene_to_file("res://main.tscn")
+
+func shoot():
+	var mush = Mushroom.instantiate()
+	get_tree().root.add_child(mush)
+	mush.transform = $Hoof.global_transform
+	if facingright:
+		mush.direction=Vector2.RIGHT
+		
+	else:
+		mush.direction=Vector2.LEFT
+		mush.get_node("Tinymushroom").flip_h = true;
 
 func transition_to_state(newState: PlayerState):
 # This is the list of things that need to happen only once for a state, when transitioning to that state
@@ -87,13 +102,15 @@ func _physics_process(delta):
 				transition_to_state(PlayerState.STATE_WALK)
 			elif Input.is_action_just_pressed("crouch"):
 				transition_to_state(PlayerState.STATE_CROUCH)
+			if cansprint:
+				if Input.is_action_just_pressed("left") or Input.is_action_just_pressed("right"):
+					transition_to_state(PlayerState.STATE_RUN)
 
 		PlayerState.STATE_WALK:
 			anim.play("Walk")
+			cansprint = true;
+			$Timer.start()
 			_direction()			
-			if is_on_ceiling():
-				print(up_direction)
-				pass
 			var direction = Input.get_axis("left", "right")
 			if !direction:
 				transition_to_state(PlayerState.STATE_IDLE)
@@ -104,7 +121,18 @@ func _physics_process(delta):
 				transition_to_state(PlayerState.STATE_CROUCH)
 			if Input.is_action_just_pressed("throw"):
 					transition_to_state(PlayerState.STATE_THROW)
-	
+			
+
+		PlayerState.STATE_RUN:
+			print("I am running")
+			anim.play("Run")
+			_direction()
+			var direction = Input.get_axis("left", "right")
+			if !direction:
+				transition_to_state(PlayerState.STATE_IDLE)
+			if Input.is_action_just_pressed("jump"):
+				velocity.y = JUMP_VELOCITY
+				transition_to_state(PlayerState.STATE_FALL)
 			
 		PlayerState.STATE_FALL:
 			_direction()
@@ -132,19 +160,25 @@ func _physics_process(delta):
 		
 		PlayerState.STATE_THROW:
 			pass
-#			if !Input.is_action_pressed("throw"):
-#				transition_to_state(PlayerState.STATE_IDLE)
 		_:
 			pass
 	
 func _direction():
 	var direction = Input.get_axis("left", "right")
 	if direction == -1:
+		facingright = false;
 		get_node("AnimatedSprite2D").flip_h = true
+		var hoof = get_node("Hoof") as Node2D
+		hoof.position.x = -18
 	elif direction == 1:
+		facingright = true;
 		get_node("AnimatedSprite2D").flip_h = false
-	velocity.x = direction * SPEED
-	
+		var hoof = get_node("Hoof") as Node2D
+		hoof.position.x = 18
+	if State==PlayerState.STATE_WALK:
+		velocity.x = direction * WALKSPEED
+	if State==PlayerState.STATE_RUN:
+		velocity.x = direction * RUNSPEED
 
 	move_and_slide()
 
@@ -161,6 +195,8 @@ func _on_animation_player_animation_finished(anim_name):
 	print(anim_name)
 	match(anim_name):
 		"Mushroom Throw":
-			print("it works")
 			transition_to_state(PlayerState.STATE_IDLE)
 	pass # Replace with function body.
+
+func _on_timer_timeout():
+	cansprint=false;
