@@ -16,6 +16,7 @@ const JUMP_VELOCITY = -350.0
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity_mult = 1
 @onready var anim = $"AnimationPlayer"
 @export var Doublejump : PackedScene
 enum PlayerState {STATE_IDLE, STATE_WALK, STATE_FALL, STATE_CROUCH, STATE_THROW, STATE_RUN}
@@ -25,6 +26,7 @@ var jumps: int = 0;
 var align_speed = 57;
 var facingright = true;
 var cansprint = false;
+var direction = 1
 
 func ready():
 	if health <= 0:
@@ -64,6 +66,8 @@ func _rotateground(delta):
 		
 		if is_on_floor():
 			$AnimatedSprite2D.rotation = lerp(rotation, averagenormal.angle() + PI/2, align_speed * delta)
+#			$AnimatedSprite2D.look_at(to_global(averagenormal))
+#			$AnimatedSprite2D.rotation += PI/2
 		pass
 
 func jumpeffect():
@@ -77,7 +81,7 @@ func jumpeffect():
 	return
 
 func _physics_process(delta):
-	velocity.y += delta * gravity
+	velocity.y += delta * gravity*gravity_mult
 	_rotateground(delta)
 	
 	if is_on_wall():
@@ -93,7 +97,11 @@ func _physics_process(delta):
 	match(State):
 		PlayerState.STATE_IDLE:
 			velocity.x = 0
-			if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = 0
+			move_and_slide()
+			if !is_on_floor():
+				transition_to_state(PlayerState.STATE_FALL)
+			if Input.is_action_just_pressed("jump"):
 				velocity.y = JUMP_VELOCITY
 				transition_to_state(PlayerState.STATE_FALL)
 			elif Input.is_action_pressed("throw"):
@@ -143,12 +151,16 @@ func _physics_process(delta):
 					velocity.y = JUMP_VELOCITY
 					jumpeffect()
 				else:
-					velocity.y = JUMP_VELOCITY*0.5
+					velocity.y = JUMP_VELOCITY*0.75
 					jumpeffect()
-			if velocity.y < 0:	
+			if velocity.y < 0:
+				if Input.is_action_pressed("jump"):
+					velocity.x = direction * WALKSPEED
+					gravity_mult = 0.85
 				anim.play("Jump")
 			else:
 				anim.play("Fall")
+				gravity_mult = 1.5
 			if is_on_floor():
 				transition_to_state(PlayerState.STATE_IDLE)
 
@@ -164,17 +176,18 @@ func _physics_process(delta):
 			pass
 	
 func _direction():
-	var direction = Input.get_axis("left", "right")
-	if direction == -1:
-		facingright = false;
-		get_node("AnimatedSprite2D").flip_h = true
-		var hoof = get_node("Hoof") as Node2D
-		hoof.position.x = -18
-	elif direction == 1:
-		facingright = true;
-		get_node("AnimatedSprite2D").flip_h = false
-		var hoof = get_node("Hoof") as Node2D
-		hoof.position.x = 18
+	direction = Input.get_axis("left", "right")
+	match int (direction):
+		-1:
+			facingright = false
+			$"AnimatedSprite2D".flip_h = true
+			var hoof = get_node("Hoof") as Node2D
+			hoof.position.x = -18
+		1:
+			facingright = true
+			$"AnimatedSprite2D".flip_h = false
+			var hoof = get_node("Hoof") as Node2D
+			hoof.position.x = 18
 	if State==PlayerState.STATE_WALK:
 		velocity.x = direction * WALKSPEED
 	if State==PlayerState.STATE_RUN:

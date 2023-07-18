@@ -38,24 +38,23 @@ func _on_player_detection_body_exited(body):
 		chase = false
 #
 #
-func frogdeath(_body):
+func frogdeath():
 	chase = false
-	#if body is Player:
 	$AnimatedSprite2D.play("Death")
 	await $AnimatedSprite2D.animation_finished
 	self.queue_free()
 #
-
-func _on_frog_death_body_entered(body):
-	frogdeath(body)
-	pass # Replace with function body.
+#
+#func _on_frog_death_body_entered(body):
+#	frogdeath()
+#	pass # Replace with function body.
 
 
 
 func _on_player_death_2_body_entered(body):
 	if body is Player:
 		body.take_damage()
-		frogdeath(body)
+		frogdeath()
 	pass # Replace with function body.
 
 
